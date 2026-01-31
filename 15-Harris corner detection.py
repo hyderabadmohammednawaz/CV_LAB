@@ -1,0 +1,19 @@
+import cv2
+import numpy as np
+# Read the input image
+image = cv2.imread(r"F:\nature.jpg") #BHANUTEJA REDDY
+# Convert the image to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# Convert to float32 for Harris Corner Detection
+gray = np.float32(gray)
+# Apply Harris Corner Detection
+harris_corners = cv2.cornerHarris(gray, blockSize=2, ksize=3, k=0.04)
+# Dilate corner points for better visibility
+harris_corners = cv2.dilate(harris_corners, None)
+image[harris_corners > 0.01 * harris_corners.max()] = [0, 0, 255]
+
+cv2.imshow("Original Image", image)
+cv2.imshow("Harris Corner Detection", image)
+cv2.imwrite("harris_corners.jpg", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
